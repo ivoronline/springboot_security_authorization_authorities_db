@@ -25,8 +25,8 @@ public class AccountLoader implements CommandLineRunner {
 
     //ADMIN: ANDREW
     Account andrew          = new Account();
-            andrew.username = "john";
-            andrew.password = "johnpassword";
+            andrew.username = "andrew";
+            andrew.password = "andrewpassword";
             andrew.profile  = "ADMIN";
 
     //USER: URBAN
