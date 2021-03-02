@@ -1,4 +1,4 @@
-package com.ivoronline.springboot_security_authorization_authorities_db.config;
+package com.ivoronline.springboot_security_authorization_authorities_db.startup;
 
 import com.ivoronline.springboot_security_authorization_authorities_db.entities.Authority;
 import com.ivoronline.springboot_security_authorization_authorities_db.repositories.AuthorityRepository;
