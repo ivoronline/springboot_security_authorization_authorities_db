@@ -20,33 +20,36 @@ import java.util.List;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-  @Autowired
-  AccountRepository accountRepository;
-
-  @Autowired
-  private ProfileRepository profileRepository;
+  @Autowired AccountRepository accountRepository;
+  @Autowired ProfileRepository profileRepository;
 
   @Override
   @Transactional
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String enteredUsername) throws UsernameNotFoundException {
 
     //GET ACCOUNT
-    Account account = accountRepository.findByUsername(username);
+    Account account = accountRepository.findByUsername(enteredUsername);
+
+    //CHECK IF USER/ACCOUNT EXISTS
+    if (account == null) { throw new UsernameNotFoundException(enteredUsername); } //Bad credentials
 
     //GET PROFILE (WITH AUTHORITIES)
     Profile profile = profileRepository.findById(account.profile).get();
 
-    //CREATE AUTHORITIES (TO CREATE USER)
-    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+    //GET PASSWORD
+    String storedPassword = account.password;
+
+    //GET AUTHORITIES
+    List<GrantedAuthority> authorities = new ArrayList<>();
     for(Authority authority : profile.authorities) {
       authorities.add(new SimpleGrantedAuthority(authority.name));
     }
 
-    //CREATE USER
-    User user = new User(account.username, account.password, true, true, true, true, authorities);
+    //CREATE USER DETAILS OBJECT
+    UserDetails userDetails = new User(enteredUsername, storedPassword, authorities);
 
     //RETURN USER
-    return user;
+    return userDetails;
 
   }
 
